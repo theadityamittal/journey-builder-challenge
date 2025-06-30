@@ -1,22 +1,23 @@
 // src/components/NodeList
 import React from 'react';
 import type { Node } from '../../api/types';
+import styles from './style.module.css'; // Uncomment if you have styles
 
 interface NodeListProps {
   nodes: Node[];
+  onSelectNode?: (nodeId: string) => void;
 }
 
-const NodeList: React.FC<NodeListProps> = ({ nodes }) => (
-  <ul>
-    {nodes.map((node) => (
-      <li key={node.id} style={{ marginBottom: '0.5rem' }}>
-        <strong>{node.data.name}</strong>{' '}
-        <small>(ID: {node.id})</small>
-        {node.data.prerequisites.length > 0 && (
-          <div style={{ marginLeft: '1rem', fontStyle: 'italic' }}>
-            Prerequisites: {node.data.prerequisites.join(', ')}
-          </div>
-        )}
+const NodeList: React.FC<NodeListProps> = ({ nodes, onSelectNode }) => (
+  <ul className={styles.list}>
+    {nodes.map(node => (
+      <li
+        key={node.id}
+        className={styles.item}
+        onClick={() => onSelectNode?.(node.id)}
+      >
+        <p className={styles.title}>{node.data.name}</p>
+        <p className={styles.id}>ID: {node.id}</p>
       </li>
     ))}
   </ul>
