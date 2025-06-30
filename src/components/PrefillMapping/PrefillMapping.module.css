@@ -1,0 +1,45 @@
+.container {
+  margin-top: 2rem;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  color: #666;
+  border-radius: 8px;
+  background: #e5e5e5;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.5rem;
+}
+.table th,
+.table td {
+  border: 1px solid #eee;
+  padding: 0.5rem;
+  text-align: left;
+}
+
+.none {
+  color: #999;
+  font-style: italic;
+}
+
+.add {
+  background: #4caf50;
+  color: #fff;
+  border: none;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.clear,
+.edit {
+  background: #f44336;
+  color: #fff;
+  border: none;
+  margin-right: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+}

@@ -1,7 +1,7 @@
 // src/components/NodeList
 import React from 'react';
 import type { Node } from '../../api/types';
-import styles from './style.module.css'; // Uncomment if you have styles
+import styles from './NodeList.module.css'; // Uncomment if you have styles
 
 interface NodeListProps {
   nodes: Node[];
