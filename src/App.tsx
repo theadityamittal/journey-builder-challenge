@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { fetchBlueprint } from './api/challengeApi';
-import type { Blueprint } from './api/challengeApi';
+import type { Blueprint } from './api/types';
+import NodeList from './components/NodeList';
 
 
 function App() {
@@ -19,9 +20,7 @@ function App() {
   return (
     <div style={{ padding: '1rem' }}>
       <h1>Journey Blueprint</h1>
-      <pre style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-all' }}>
-        {JSON.stringify(blueprint, null, 2)}
-      </pre>
+      <NodeList nodes={blueprint.nodes} />
     </div>
   );
 }
