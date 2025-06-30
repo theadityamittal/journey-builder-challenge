@@ -22,7 +22,7 @@ function App() {
       <h1>Journey Blueprint</h1>
       <NodeList nodes={blueprint.nodes} />
       <h2>Dependencies</h2>
-       <EdgeList edges={blueprint.edges} />
+       <EdgeList edges={blueprint.edges} nodes={blueprint.nodes} />
     </div>
   );
 }
