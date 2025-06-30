@@ -11,6 +11,28 @@ function App() {
   const [error, setError] = useState<string | null>(null);
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
 
+  const updateMapping = (
+   nodeId: string,
+   field: string,
+   newSource: string | null   // null ⇒ clear
+ ) => {
+   if (!blueprint) return;
+
+   // deep-clone the blueprint slice we’re touching
+   const next = structuredClone(blueprint);
+
+   const node = next.nodes.find(n => n.id === nodeId);
+   if (!node) return;
+
+   if (newSource) {
+     node.data.input_mapping[field] = newSource;
+   } else {
+     delete node.data.input_mapping[field];
+   }
+
+   setBlueprint(next);
+ };
+
   useEffect(() => {
     fetchBlueprint()
       .then(data => setBlueprint(data))
@@ -42,6 +64,7 @@ function App() {
           form={selectedForm}
           allNodes={blueprint.nodes}
           allForms={blueprint.forms}
+          updateMapping={updateMapping}
         />
       )}
 

@@ -43,3 +43,11 @@
   border-radius: 4px;
   cursor: pointer;
 }
+
+.pick {
+  cursor: pointer;
+  padding: 2px 0;
+}
+.pick:hover {
+  background: #f0f0ff;
+}

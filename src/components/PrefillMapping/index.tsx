@@ -9,11 +9,12 @@ interface PrefillMappingProps {
   form: Form;
   allNodes: Node[];
   allForms: Form[];
+  updateMapping: (nodeId: string, field: string, source: string | null) => void;
 }
 
 const globalFields = ['appVersion', 'timestamp', 'clientOrgName'];
 
-const PrefillMapping: React.FC<PrefillMappingProps> = ({ node, form, allNodes, allForms }) => {
+const PrefillMapping: React.FC<PrefillMappingProps> = ({ node, form, allNodes, allForms, updateMapping }) => {
   // Extract all field names from the JSON Schema
   const [modalOpen, setModalOpen] = useState(false);
   const [activeField, setActiveField] = useState<string | null>(null);
@@ -77,7 +78,25 @@ const PrefillMapping: React.FC<PrefillMappingProps> = ({ node, form, allNodes, a
                     : <span className={styles.none}>(no mapping)</span>}
                 </td>
                 <td>
-                  {!mapped && (
+                  {mapped ? (
+                    <>
+                      <button
+                        className={styles.clear}
+                        onClick={() => updateMapping(node.id, field, null)}
+                      >
+                        Clear
+                      </button>
+                      <button
+                        className={styles.edit}
+                        onClick={() => {
+                          setActiveField(field);
+                          setModalOpen(true);
+                        }}
+                      >
+                        Edit
+                      </button>
+                    </>
+                  ) : (
                     <button
                       className={styles.add}
                       onClick={() => {
@@ -109,7 +128,16 @@ const PrefillMapping: React.FC<PrefillMappingProps> = ({ node, form, allNodes, a
             {directParentNodes.flatMap(parent => {
               const pForm = formMap.get(parent.data.component_id)!;
               return Object.keys((pForm.field_schema as any).properties).map(f => (
-                <li key={`${parent.id}-${f}`}>{parent.data.name} → {f}</li>
+                <li
+                  key={`${parent.id}-${f}`}
+                  className={styles.pick}
+                  onClick={() => {
+                    updateMapping(node.id, activeField!, `${parent.id}:${f}`);
+                    setModalOpen(false);
+                  }}
+                >
+                  {parent.data.name} → {f}
+                </li>
               ));
             })}
           </ul>
@@ -119,14 +147,33 @@ const PrefillMapping: React.FC<PrefillMappingProps> = ({ node, form, allNodes, a
             {transitiveParentNodes.flatMap(parent => {
               const pForm = formMap.get(parent.data.component_id)!;
               return Object.keys((pForm.field_schema as any).properties).map(f => (
-                <li key={`${parent.id}-${f}`}>{parent.data.name} → {f}</li>
+                <li
+                  key={`${parent.id}-${f}`}
+                  className={styles.pick}
+                  onClick={() => {
+                    updateMapping(node.id, activeField!, `${parent.id}:${f}`);
+                    setModalOpen(false);
+                  }}
+                >
+                  {parent.data.name} → {f}
+                </li>
               ));
             })}
           </ul>
 
           <h4>Global Data</h4>
           <ul>
-            {globalFields.map(f => <li key={f}>{f}</li>)}
+            {globalFields.map(f => 
+              <li key={f}
+                className={styles.pick}
+                onClick={() => {
+                  updateMapping(node.id, activeField!, `global:${f}`);
+                  setModalOpen(false);
+                }}
+              >
+                {f}
+              </li>
+            )}
           </ul>
         </div>
 
