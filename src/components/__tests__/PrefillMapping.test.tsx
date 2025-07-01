@@ -58,15 +58,21 @@ it('lets the user add a mapping to the "email" field', async () => {
     />
   );
 
-  // ➊ Open the Add modal
+  // Open the Add modal
   await userEvent.click(screen.getByRole('button', { name: /add/i }));
 
-  // ➋ Expand the "Global Data" section so its <li> items show
+  // Expand the "Direct Parent Fields" section so its <li> items show
+  await userEvent.click(screen.getByRole('button', { name: /Direct Parent Fields/i }));
+
+  // Expand the "Transitive Parent Fields" section so its <li> items show
+  await userEvent.click(screen.getByRole('button', { name: /Transitive Parent Fields/i }));
+
+  // Expand the "Global Data" section so its <li> items show
   await userEvent.click(screen.getByRole('button', { name: /Global Data/i }));
 
-  // ➌ Click the "appVersion" list item
+  // Click the "appVersion" list item
   await userEvent.click(screen.getByText('appVersion'));
 
-  // ➍ Confirm updateMapping was called with the right args
+  // Confirm updateMapping was called with the right args
   expect(updateSpy).toHaveBeenCalledWith(node.id, 'email', 'global:appVersion');
 });
