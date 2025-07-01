@@ -87,30 +87,3 @@ src/
 * **Data-source adapters** live in the PrefillMapping component; to add a new source, create a new section and pass its data as props.
 * **CSS modules** ensure scoped styles without collisions.
 * **Tests** cover components in `src/components/__tests__` using Jest and React Testing Library.
-
----
-
-## ✍️ Submission
-
-Use the following cURL command, replacing placeholders with your details:
-
-```bash
-TOKEN="fbmd_yourtokenhere"
-REPO="https://github.com/your-handle/journey-builder-challenge"
-VIDEO="https://youtu.be/your-video-id"
-
-curl -X POST \
-  -H "Authorization: Bearer $TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "repoLink":"'$REPO'",
-    "recordingLink":"'$VIDEO'"
-  }' \
-  https://makefizz.buzz/api/challenges/cmbmgaa4n0001kd7yuf4ohhlw/submissions
-```
-
-Submit within **4 business days** of starting the challenge to ensure your solution is reviewed.
-
----
-
-Good luck, and thanks for reviewing!
