@@ -1,7 +1,7 @@
 // src/components/PrefillMapping.tsx
 import React, { useState } from 'react';
 import type { Node, Form } from '../../api/types';
-import styles from './PrefillMapping.module.css';
+import styles from './PrefillMapping.module.css'
 // import Modal from '../Modal';
 import { Accordion, Box, Divider, Modal, Paper, Typography } from '@mui/material';
 import MappingModal from '../MappingModal';

@@ -1,5 +1,5 @@
 // src/components/MappingModal.tsx
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './MappingModal.module.css';
 import { Accordion, AccordionSummary, Modal, Paper, Typography } from '@mui/material';
 import type { Node } from '../../api/types';
@@ -29,7 +29,7 @@ const MappingModal: React.FC<ModalProps> = ({
   formMap, 
   updateMapping
 }) => {
-  const [expanded, setExpanded] = React.useState<string>("panel1");
+  const [expanded, setExpanded] = useState<string>("panel1");
 
   const handleChange =
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
