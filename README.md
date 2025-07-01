@@ -65,7 +65,7 @@ npm run test:coverage  # generate coverage report (coverage/lcov-report)
 
 ## 📈 CI Status
 
-![CI](https://github.com/your-handle/journey-builder-challenge/actions/workflows/ci.yml/badge.svg)
+![CI](https://github.com/theadityamittal/journey-builder-challenge/actions/workflows/ci.yml/badge.svg)
 
 This badge indicates passing tests and coverage on every push/PR via GitHub Actions.
 
