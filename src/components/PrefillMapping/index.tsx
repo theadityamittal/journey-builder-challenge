@@ -2,7 +2,9 @@
 import React, { useState } from 'react';
 import type { Node, Form } from '../../api/types';
 import styles from './PrefillMapping.module.css';
-import Modal from '../Modal';
+// import Modal from '../Modal';
+import { Accordion, Box, Divider, Modal, Paper, Typography } from '@mui/material';
+import MappingModal from '../MappingModal';
 
 interface PrefillMappingProps {
   node: Node;
@@ -56,130 +58,89 @@ const PrefillMapping: React.FC<PrefillMappingProps> = ({ node, form, allNodes, a
   const existingMap = node.data.input_mapping as Record<string, string>;
 
   return (
-    <div className={styles.container}>
-      <h2>Prefill Mapping for “{node.data.name}”</h2>
-      <table className={styles.table}>
-        <thead>
-          <tr>
-            <th>Field</th>
-            <th>Mapping</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {fieldNames.map(field => {
-            const mapped = existingMap[field];
-            return (
-              <tr key={field}>
-                <td>{field}</td>
-                <td>
-                  {mapped
-                    ? `→ ${mapped}`
-                    : <span className={styles.none}>(no mapping)</span>}
-                </td>
-                <td>
-                  {mapped ? (
-                    <>
-                      <button
-                        className={styles.clear}
-                        onClick={() => updateMapping(node.id, field, null)}
-                      >
-                        Clear
-                      </button>
-                      <button
-                        className={styles.edit}
-                        onClick={() => {
-                          setActiveField(field);
-                          setModalOpen(true);
-                        }}
-                      >
-                        Edit
-                      </button>
-                    </>
-                  ) : (
+    <Paper elevation={3} sx={{ margin: 2, padding: 2 , width: '60%'}}>
+      <Box sx={{ marginBottom: 2 }}>
+        <Typography variant="h6" component="h2" className={styles.title}>
+          Prefill Mapping for “{node.data.name}”
+        </Typography>
+        <Typography variant="body1" className={styles.description}>
+          Prefill fields for this form
+        </Typography>
+      </Box>
+      <Divider />
+      <Box sx={{ padding: 2 }}>
+        {fieldNames.length === 0 ? (
+          <Typography variant="body2" color="text.secondary">
+            No fields available for mapping in this form.
+          </Typography>
+        ) : (fieldNames.map(field => {
+          const mapped = existingMap[field];
+          // If no mapping
+          return (
+            <Box 
+              key={field} 
+              className={styles.fieldRow}
+            >
+              <Box 
+                className={styles.fieldName}
+                sx={{color: mapped ? 'text.primary' : 'text.secondary'}}
+              >
+                <Typography variant="body1">
+                  {mapped ? `${field} → ${mapped}` : field}
+                </Typography>
+              </Box>
+              <Box className={styles.actions}>
+                {mapped ? (
+                  <>
                     <button
-                      className={styles.add}
+                      className={styles.clear}
+                      onClick={() => updateMapping(node.id, field, null)}
+                    >
+                      Clear
+                    </button>
+                    <button
+                      className={styles.edit}
                       onClick={() => {
                         setActiveField(field);
                         setModalOpen(true);
                       }}
                     >
-                      Add
+                      Edit
                     </button>
-                  )}
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-      <Modal
+                  </>
+                ) : (
+                  <button
+                    className={styles.add}
+                    onClick={() => {
+                      setActiveField(field);
+                      setModalOpen(true);
+                    }}
+                  >
+                    Add
+                  </button>
+                )}
+              </Box>
+            </Box>
+          );
+        }))}
+      </Box>
+      <MappingModal
         title={activeField ? `Select source for “${activeField}”` : ''}
         isOpen={modalOpen}
         onClose={() => {
           setModalOpen(false);
           setActiveField(null);
         }}
-      >
-        {/* Modal content for adding/editing mappings */}
-        <div>
-          <h4>Direct Parent Fields</h4>
-          <ul>
-            {directParentNodes.flatMap(parent => {
-              const pForm = formMap.get(parent.data.component_id)!;
-              return Object.keys((pForm.field_schema as any).properties).map(f => (
-                <li
-                  key={`${parent.id}-${f}`}
-                  className={styles.pick}
-                  onClick={() => {
-                    updateMapping(node.id, activeField!, `${parent.id}:${f}`);
-                    setModalOpen(false);
-                  }}
-                >
-                  {parent.data.name} → {f}
-                </li>
-              ));
-            })}
-          </ul>
-
-          <h4>Transitive Parent Fields</h4>
-          <ul>
-            {transitiveParentNodes.flatMap(parent => {
-              const pForm = formMap.get(parent.data.component_id)!;
-              return Object.keys((pForm.field_schema as any).properties).map(f => (
-                <li
-                  key={`${parent.id}-${f}`}
-                  className={styles.pick}
-                  onClick={() => {
-                    updateMapping(node.id, activeField!, `${parent.id}:${f}`);
-                    setModalOpen(false);
-                  }}
-                >
-                  {parent.data.name} → {f}
-                </li>
-              ));
-            })}
-          </ul>
-
-          <h4>Global Data</h4>
-          <ul>
-            {globalFields.map(f => 
-              <li key={f}
-                className={styles.pick}
-                onClick={() => {
-                  updateMapping(node.id, activeField!, `global:${f}`);
-                  setModalOpen(false);
-                }}
-              >
-                {f}
-              </li>
-            )}
-          </ul>
-        </div>
-
-      </Modal>
-    </div>
-  );
+        activeField={activeField}
+        node={node}
+        directParentNodes={directParentNodes}
+        transitiveParentNodes={transitiveParentNodes}
+        globalFields={globalFields}
+        formMap={formMap}
+        updateMapping={updateMapping}
+      />
+    </Paper>
+  )
 };
 
 export default PrefillMapping;

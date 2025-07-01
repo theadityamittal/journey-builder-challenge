@@ -5,6 +5,8 @@ import NodeList from './components/NodeList';
 import EdgeList from './components/EdgeList';
 import PrefillMapping from './components/PrefillMapping';
 import type { Node, Form } from './api/types';
+import './App.css';
+import { Box, Divider, Typography } from '@mui/material';
 
 function App() {
   const [blueprint, setBlueprint] = useState<Blueprint | null>(null);
@@ -46,17 +48,29 @@ function App() {
   const selectedForm: Form | undefined = selectedNode && blueprint.forms.find(f => f.id === selectedNode.data.component_id);
 
   return (
-    <div style={{ padding: '1rem' }}>
-      <h1>Journey Blueprint</h1>
-      <NodeList 
-        nodes={blueprint.nodes} 
-        onSelectNode={id => setSelectedNodeId(id)}
-      />
-      <h2>Dependencies</h2>
-      <EdgeList 
-        edges={blueprint.edges} 
-        nodes={blueprint.nodes} 
-      />
+    <div className="App">
+      <Typography variant="h2" gutterBottom>
+        Journey Builder Challenge
+      </Typography>
+      <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, alignItems: 'center' }}>
+        <Box>
+          <NodeList
+            nodes={blueprint.nodes}
+            selectedNodeId={selectedNodeId}
+            onSelectNode={id => setSelectedNodeId(id)}
+          />
+        </Box>
+        <Divider orientation="vertical" flexItem />
+        <Box>
+          <Typography variant="h5" gutterBottom>
+            Dependency Graph
+          </Typography>
+          <EdgeList 
+            edges={blueprint.edges} 
+            nodes={blueprint.nodes} 
+          />
+        </Box>
+      </Box>
       
       {selectedNode && selectedForm && (
         <PrefillMapping

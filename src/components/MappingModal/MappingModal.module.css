@@ -34,3 +34,12 @@
 .content {
   padding: 1rem;
 }
+
+.pick {
+  cursor: pointer;
+  padding: 2px 0;
+}
+.pick:hover {
+  background: #f0f0ff;
+}
+

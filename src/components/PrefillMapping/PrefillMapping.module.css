@@ -44,10 +44,30 @@
   cursor: pointer;
 }
 
-.pick {
-  cursor: pointer;
-  padding: 2px 0;
+/* NEW STYLES */
+.title {
+  font-size: 1.25rem;
+  font-weight: 500;
 }
-.pick:hover {
-  background: #f0f0ff;
+
+.description {
+  font-size: 0.875rem;
+  color: #666;
+  margin-top: 0.25rem;
+}
+
+.fieldRow {
+  background-color: #eaeaea;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: default;
+}
+
+.fieldRow:hover {
+  background-color: #d5d5d5;
+  transition: 50ms;
 }

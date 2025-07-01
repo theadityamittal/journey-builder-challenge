@@ -1,26 +1,52 @@
 // src/components/NodeList
 import React from 'react';
 import type { Node } from '../../api/types';
-import styles from './NodeList.module.css'; // Uncomment if you have styles
+import { Box, Card, CardActionArea, CardContent, Typography } from '@mui/material';
 
 interface NodeListProps {
   nodes: Node[];
-  onSelectNode?: (nodeId: string) => void;
+  selectedNodeId: string | null;
+  onSelectNode: (nodeId: string) => void;
 }
 
-const NodeList: React.FC<NodeListProps> = ({ nodes, onSelectNode }) => (
-  <ul className={styles.list}>
+const NodeList: React.FC<NodeListProps> = ({ nodes, selectedNodeId, onSelectNode }) => {
+
+  return (
+    <Box
+      sx={{
+        width: 'auto',
+        display: 'grid',
+        gridTemplateColumns: 'repeat(3, minmax(200px, 1fr))',
+        gap: 2
+      }}
+    >
     {nodes.map(node => (
-      <li
-        key={node.id}
-        className={styles.item}
-        onClick={() => onSelectNode?.(node.id)}
-      >
-        <p className={styles.title}>{node.data.name}</p>
-        <p className={styles.id}>ID: {node.id}</p>
-      </li>
+      <Card key={node.id}>
+        <CardActionArea
+          onClick={() => onSelectNode(node.id)}
+          data-active={selectedNodeId === node.id ? '' : undefined}
+          sx={{
+            height: '100%',
+            '&[data-active]': {
+              backgroundColor: "#e5e5e5",
+              '&:hover': {
+                backgroundColor: 'action.selectedHover',
+              },
+            },
+          }}
+        >
+          <CardContent sx={{ height: '100%' }}>
+            <Typography variant="h5" component="div">
+              {node.data.name}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              ID: {node.id}
+            </Typography>
+          </CardContent>
+        </CardActionArea>
+      </Card>
     ))}
-  </ul>
-);
+    </Box>
+)};
 
 export default NodeList;

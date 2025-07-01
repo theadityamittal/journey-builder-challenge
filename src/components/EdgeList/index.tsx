@@ -1,6 +1,7 @@
 // src/components/EdgeList.tsx
 import React from 'react';
 import type { Edge, Node } from '../../api/types';
+import { Paper, Typography } from '@mui/material';
 
 interface EdgeListProps {
   edges: Edge[];
@@ -14,17 +15,17 @@ const EdgeList: React.FC<EdgeListProps> = ({ edges, nodes }) => {
   ) as Record<string,string>;
 
   return (
-    <ul>
+    <Paper elevation={2} sx={{ padding: 2, maxHeight: '400px', overflowY: 'auto' }}>
       {edges.map((edge, idx) => {
         const sourceName = idToName[edge.source] ?? edge.source;
         const targetName = idToName[edge.target] ?? edge.target;
         return (
-          <li key={idx}>
+          <Typography key={idx} variant="body1" gutterBottom>
             {sourceName} → {targetName}
-          </li>
+          </Typography>
         );
       })}
-    </ul>
+    </Paper>
   );
 };
 
