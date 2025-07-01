@@ -76,3 +76,76 @@ it('lets the user add a mapping to the "email" field', async () => {
   // Confirm updateMapping was called with the right args
   expect(updateSpy).toHaveBeenCalledWith(node.id, 'email', 'global:appVersion');
 });
+
+it('handles empty form fields', () => {
+  const emptyForm = { ...form, field_schema: { properties: {} } };
+  render(
+    <PrefillMapping
+      node={node}
+      form={emptyForm}
+      allNodes={[node]}
+      allForms={[emptyForm]}
+      updateMapping={jest.fn()}
+    />
+  );
+  
+  expect(screen.getByText('No fields available for mapping in this form.')).toBeInTheDocument();
+});
+
+it('handles missing mapping', () => {
+  const nodeWithMapping = {
+    ...node,
+    data: { ...node.data, input_mapping: { email: 'global:test' } }
+  };
+  
+  render(
+    <PrefillMapping
+      node={nodeWithMapping}
+      form={form}
+      allNodes={[nodeWithMapping]}
+      allForms={[form]}
+      updateMapping={jest.fn()}
+    />
+  );
+});
+
+it('handles clearing an existing mapping', async () => {
+  const clearSpy = jest.fn();
+  const nodeWithMapping = {
+    ...node,
+    data: { ...node.data, input_mapping: { email: 'global:test' } }
+  };
+  
+  render(
+    <PrefillMapping
+      node={nodeWithMapping}
+      form={form}
+      allNodes={[nodeWithMapping]}
+      allForms={[form]}
+      updateMapping={clearSpy}
+    />
+  );
+
+  await userEvent.click(screen.getByRole('button', { name: /clear/i }));
+  expect(clearSpy).toHaveBeenCalledWith(nodeWithMapping.id, 'email', null);
+});
+
+it('handles editing an existing mapping', async () => {
+  const nodeWithMapping = {
+    ...node,
+    data: { ...node.data, input_mapping: { email: 'global:test' } }
+  };
+  
+  render(
+    <PrefillMapping
+      node={nodeWithMapping}
+      form={form}
+      allNodes={[nodeWithMapping]}
+      allForms={[form]}
+      updateMapping={jest.fn()}
+    />
+  );
+
+  await userEvent.click(screen.getByRole('button', { name: /edit/i }));
+  expect(screen.getByText(/Select source for/)).toBeInTheDocument();
+});

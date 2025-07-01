@@ -12,6 +12,19 @@ const config: Config = {
     '\\.(css|scss|sass|less)$': 'identity-obj-proxy',
   },
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
+  collectCoverage: true,
+  collectCoverageFrom: [
+    'src/components/**/*.{ts,tsx}',
+  ],
+  coverageDirectory: 'coverage',
+  coverageThreshold: {
+    global: {
+      branches: 70,
+      functions: 70,
+      lines: 70,
+      statements: 70,
+    },
+  },
 };
 
 export default config;
